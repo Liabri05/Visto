@@ -134,7 +134,23 @@ export const handleContactUser = parameters => () => {
     setInquiryModalOpen(true);
   }
 };
+export const handleToggleFavorites = parameters => isFavorite => {
+  const { currentUser, listing, onUpdateFavorites } = parameters;
+  const favorites = currentUser?.attributes.profile.privateData.favorites || [];
 
+  let payload;
+  if (isFavorite) {
+    payload = {
+      privateData: { favorites: favorites.filter(f => f !== listing.id.uuid) },
+    };
+  } else {
+    payload = {
+      privateData: { favorites: [...favorites, listing.id.uuid] },
+    };
+  }
+
+  onUpdateFavorites(payload);
+};
 /**
  * Callback for the inquiry modal to submit aka create inquiry transaction on ListingPage.
  * Note: this is for booking and purchase processes. Inquiry process is handled through handleSubmit.

@@ -708,6 +708,8 @@
   "OrderBreakdown.subTotal": "Subtotal",
   "OrderBreakdown.total": "Total price",
   "OrderPanel.author": "{name}",
+  "OrderPanel.addFavoriteButton": "Add to favorites",
+  "OrderPanel.unfavoriteButton": "Unfavorite",
   "OrderPanel.closedListingButtonText": "Sorry, this listing has been closed.",
   "OrderPanel.ctaButtonMessageBooking": "Book now",
   "OrderPanel.ctaButtonMessageInquiry": "Send an inquiry",

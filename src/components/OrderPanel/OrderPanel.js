@@ -486,8 +486,9 @@ const isFavorite =
             <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
           </span>
         </div>
-        
-        {favoriteButton}
+        {
+        {favoriteButton,}
+        }
 
         {showPriceMissing ? (
           <PriceMissing />

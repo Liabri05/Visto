@@ -1,7 +1,6 @@
 @import '../../styles/customMediaQueries.css';
 
-.root {
-}
+.root 
 
 /* Order form inside modalContainer needs special handling */
 /* since "inMobile" breakpoint is actually --viewportLarge */
@@ -277,4 +276,7 @@
   @media (--viewportMedium) {
     padding: 0;
   }
+}
+.favoriteButton {
+  margin: 12px 0 36px 0;
 }
