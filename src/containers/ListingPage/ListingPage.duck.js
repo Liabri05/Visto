@@ -6,6 +6,7 @@ import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { transactionLineItems } from '../../util/api';
 import * as log from '../../util/log';
 import { denormalisedResponseEntities } from '../../util/data';
+import { updateProfile } from '../ProfileSettingsPage/ProfileSettingsPage.duck';
 import {
   bookingTimeUnits,
   findNextBoundary,
@@ -364,6 +365,21 @@ export const fetchTransactionLineItemsThunk = createAsyncThunk(
 // Backward compatible wrapper for the thunk
 export const fetchTransactionLineItems = ({ orderData, listingId, isOwnListing }) => dispatch => {
   return dispatch(fetchTransactionLineItemsThunk({ orderData, listingId, isOwnListing })).unwrap();
+};
+
+// ================ Favorites Thunk ================ //
+
+export const updateFavorites = ({ listingId, isFavorite }) => (dispatch, getState, sdk) => {
+  const currentUser = getState().user.currentUser;
+  const favorites = currentUser?.attributes?.profile?.publicData?.favorites || [];
+
+  // If already favorite, remove it. If not, add it.
+  const updatedFavorites = isFavorite
+    ? favorites.filter(id => id !== listingId.uuid)
+    : [...favorites, listingId.uuid];
+
+  // This calls the existing updateProfile logic to save to the Sharetribe backend
+  return dispatch(updateProfile({ publicData: { favorites: updatedFavorites } }));
 };
 
 // ================ Slice ================ //

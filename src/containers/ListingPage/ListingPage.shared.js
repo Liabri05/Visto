@@ -101,7 +101,8 @@ export const listingImages = (listing, variantName) =>
  *
  * @param {Object} parameters all the info needed to open inquiry modal.
  */
-export const handleContactUser = parameters => () => {
+export const handleContactUser = parameters => () => 
+{
   const {
     history,
     params,
@@ -135,17 +136,28 @@ export const handleContactUser = parameters => () => {
   }
 };
 export const handleToggleFavorites = parameters => isFavorite => {
-  const { currentUser, listing, onUpdateFavorites } = parameters;
-  const favorites = currentUser?.attributes.profile.privateData.favorites || [];
+  const { currentUser, listing, onUpdateFavorites, history, routes, location } = parameters;
+
+  // 1. If no user, redirect to signup (matching your handleContactUser logic)
+  if (!currentUser) {
+    const state = { from: `${location.pathname}${location.search}${location.hash}` };
+    return history.push(createResourceLocatorString('SignupPage', routes, {}, {}), state);
+  }
+
+  // 2. Safe access to existing favorites
+  const favorites = currentUser.attributes?.profile?.privateData?.favorites || [];
+  const listingId = listing.id.uuid;
 
   let payload;
   if (isFavorite) {
+    // Remove from favorites
     payload = {
-      privateData: { favorites: favorites.filter(f => f !== listing.id.uuid) },
+      privateData: { favorites: favorites.filter(f => f !== listingId) },
     };
   } else {
+    // Add to favorites (using Set to ensure uniqueness)
     payload = {
-      privateData: { favorites: [...favorites, listing.id.uuid] },
+      privateData: { favorites: [...new Set([...favorites, listingId])] },
     };
   }
 
